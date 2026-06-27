@@ -7,3 +7,4 @@ langchain-huggingface
 chromadb
 sentence-transformers
 pypdf
+pysqlite3-binary
