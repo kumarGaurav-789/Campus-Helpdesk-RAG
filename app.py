@@ -290,14 +290,74 @@ if not st.session_state.logged_in:
 
     st.markdown("---")
 
-    st.info("""
-Google Sign-In popup is restricted in Streamlit local environment.
+    st.markdown("---")
 
-For mentor demo:
-1. Use Email Login
-2. Or deploy on Streamlit Cloud
-3. Then Google popup will work correctly
-""")
+google_login = st.button("🔵 Continue with Google")
+
+if google_login:
+
+    st.components.v1.html(
+        f"""
+        <!DOCTYPE html>
+        <html>
+
+        <head>
+
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+        </head>
+
+        <body>
+
+        <script>
+
+        const firebaseConfig = {{
+
+            apiKey: "{firebaseConfig['apiKey']}",
+
+            authDomain: "{firebaseConfig['authDomain']}",
+
+            projectId: "{firebaseConfig['projectId']}",
+
+            storageBucket: "{firebaseConfig['storageBucket']}",
+
+            messagingSenderId: "{firebaseConfig['messagingSenderId']}",
+
+            appId: "{firebaseConfig['appId']}"
+        }};
+
+        firebase.initializeApp(firebaseConfig);
+
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+
+        .then((result) => {{
+
+            const user = result.user;
+
+            alert("Logged in as: " + user.email);
+
+        }})
+
+        .catch((error) => {{
+
+            alert(error.message);
+
+        }});
+
+        </script>
+
+        </body>
+
+        </html>
+        """,
+        height=0
+    )
+
+    st.success("Google Login Popup Opened")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
